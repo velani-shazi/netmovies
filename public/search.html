@@ -139,9 +139,12 @@
             ]);
             const moviesData = await moviesResponse.json();
             const tvData = await tvResponse.json();
+            //add a new field called media_type to the results object to differentiate between movies and TV shows
+            moviesData.results.forEach(item => item.media_type = 'movie');
+            tvData.results.forEach(item => item.media_type = 'tv');
 
-            const allResults = [...moviesData.results, ...tvData.results];
-            console.log(allResults);
+
+            const allResults = [...moviesData.results, ...tvData.results];         
             displaySearchResults(allResults);
         }
 
