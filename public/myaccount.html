@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn-custom {
+            background-color: #333;
+            color: white;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Update My Account</h2>
+        <form id="update-form">
+            <div class="form-group">
+                <label for="username">New Username:</label>
+                <input type="text" id="username" class="form-control" placeholder="Enter new username">
+            </div>
+            <div class="form-group">
+                <label for="password">New Password:</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter new password">
+            </div>
+            <button type="submit" class="btn btn-custom">Update</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('update-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please log in first');
+                return window.location.href = 'login.html';
+            }
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const updatedData = {};
+            if (username) updatedData.newUsername = username;
+            if (password) updatedData.newPassword = password;
+
+            const response = await fetch('/myaccount', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(updatedData),
+            });
+
+            if (response.ok) {
+                alert('Account updated successfully!');
+                // Optionally redirect or reload
+            } else {
+                const data = await response.json();
+                alert(`Error: ${data.error}`);
+            }
+        });
+    </script>
+
+</body>
+</html>

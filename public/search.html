@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        nav.navbar {
+            background-color: #000000;
+        }
+        .navbar-brand {
+            color: #e50914 !important;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+            margin-right: 15px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #e50914 !important;
+        }
+        .movies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .movie {
+            width: 200px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .movie img {
+            width: 100%;
+            border-bottom: 1px solid #444;
+        }
+        .movie h3 {
+            font-size: 1rem;
+            color: white;
+            margin: 10px 0;
+        }
+        .movie p {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        .movie:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+        header h1 {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .save-btn {
+            background-color: #e50914;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .save-btn:hover {
+            background-color: #f40612;
+        }
+        .saved-btn {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        .search-container {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">NetMovies</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="library.html">My Library</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <h1>Welcome, <span id="username"></span>!</h1>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <div class="input-group">
+            <input type="text" id="search-input" class="form-control" placeholder="Search TV Shows">
+            <button class="btn btn-primary" onclick="searchTVShows()">Search</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="text-center">Search Results</h2>
+        <div class="movies" id="search-results"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const apiKey = '3eb8ed61d723170933f1008a4e401d0c';
+        const apiUrl = 'https://api.themoviedb.org/3';
+
+        // Check if the user is logged in and display the username
+        function checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            const username = localStorage.getItem('username');
+            document.getElementById('username').textContent = token ? (username || 'User') : 'Guest';
+        }
+
+        async function fetchSearchResults(query) {
+            const [moviesResponse, tvResponse] = await Promise.all([
+                fetch(`${apiUrl}/search/movie?api_key=${apiKey}&language=en-US&page=1&query=${encodeURIComponent(query)}`),
+                fetch(`${apiUrl}/search/tv?api_key=${apiKey}&language=en-US&page=1&query=${encodeURIComponent(query)}`)
+            ]);
+            const moviesData = await moviesResponse.json();
+            const tvData = await tvResponse.json();
+
+            const allResults = [...moviesData.results, ...tvData.results];
+            console.log(allResults);
+            displaySearchResults(allResults);
+        }
+
+        function displaySearchResults(results) {
+            const container = document.getElementById('search-results');
+            container.innerHTML = '';
+            results.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'movie';
+                itemDiv.innerHTML = `
+                    <a href="stream.html?id=${item.id}&type=${item.media_type}" style="text-decoration: none;">
+                        <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" alt="${item.title || item.name}">
+                        <h3>${item.title || item.name}</h3>
+                        <p>${item.release_date || item.first_air_date}</p>
+                    </a>
+                    <button class="save-btn" id="save-btn-${item.id}" onclick="saveShow(${item.id}, '${item.title || item.name}', '${item.poster_path}', '${item.media_type}')">Save to Library</button>
+                `;
+                container.appendChild(itemDiv);
+                checkIfSaved(item.id);
+            });
+        }
+
+        async function searchTVShows() {
+            const query = document.getElementById('search-input').value;
+            if (query) {
+                window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+            } else {
+                alert('Please enter a search term.');
+            }
+        }
+
+        // Check if the show is already in the library
+        async function checkIfSaved(showId) {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            const response = await fetch('/library', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const library = await response.json();
+                const isSaved = library.some(item => JSON.parse(item).id === showId);
+                const saveBtn = document.getElementById(`save-btn-${showId}`);
+                if (isSaved) {
+                    saveBtn.textContent = 'Saved';
+                    saveBtn.classList.add('saved-btn');
+                    saveBtn.disabled = true;
+                }
+            }
+        }
+
+        async function saveShow(id, title, posterPath, type) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please log in to save shows.');
+                return window.location.href = 'login.html';
+            }
+
+            const response = await fetch('/library/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ id, type, title, posterPath }),
+            });
+
+            if (response.ok) {
+                alert('Show saved to your library!');
+                checkIfSaved(id);
+            } else {
+                alert('Failed to save show.');
+            }
+        }
+
+        // Get the search query from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const query = urlParams.get('query');
+        if (query) {
+            fetchSearchResults(query);
+        } else {
+            alert('No search query provided.');
+        }
+
+        // Check login status when the page loads
+        checkLoginStatus();
+    </script>
+</body>
+</html>

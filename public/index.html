@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetMovies</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #141414;
+            color: #ffffff;
+        }
+        nav.navbar {
+            background-color: #000000;
+        }
+        .navbar-brand {
+            color: #e50914 !important;
+            font-weight: bold;
+        }
+        .navbar-nav .nav-link {
+            color: #ffffff !important;
+            margin-right: 15px;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #e50914 !important;
+        }
+        .search-container {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .card {
+            background-color: #1e1e1e;
+            color: #fff;
+        }
+        .save-btn {
+            background-color: #e50914;
+            border: none;
+        }
+        .save-btn:hover {
+            background-color: #f40612;
+        }
+        .saved-btn {
+            background-color: #555;
+            border: none;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">NetMovies</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="library.html">My Library</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- User Info -->
+        <div id="user-info" class="d-flex justify-content-end">
+            <span id="username" class="me-3"></span>
+            <button id="logout-btn" class="btn btn-danger btn-sm" style="display: none;" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <div class="input-group">
+                <input type="text" id="search-input" class="form-control" placeholder="Search TV Shows">
+                <button class="btn btn-primary" onclick="searchTVShows()">Search</button>
+            </div>
+        </div>
+
+        <!-- Movies Section -->
+        <div id="movies" class="mb-5">
+            <h2 class="text-center">Movies</h2>
+            <div class="row" id="movie-list"></div>
+        </div>
+
+        <!-- TV Shows Section -->
+        <div id="tv-shows" class="mb-5">
+            <h2 class="text-center">TV Shows</h2>
+            <div class="row" id="tv-show-list"></div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const apiKey = '3eb8ed61d723170933f1008a4e401d0c';
+        const apiUrl = 'https://api.themoviedb.org/3';
+
+        // Check if user is logged in and display username
+        function checkLoginStatus() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                const username = localStorage.getItem('username');
+                document.getElementById('username').textContent = `Welcome, ${username}`;
+                document.getElementById('logout-btn').style.display = 'inline-block';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            alert('Logged out successfully!');
+            window.location.href = 'login.html';
+        }
+
+        async function fetchData(endpoint, containerId, isTVShow = false) {
+            const response = await fetch(`${apiUrl}${endpoint}?api_key=${apiKey}&language=en-US&page=1`);
+            const data = await response.json();
+            displayItems(containerId, data.results, isTVShow);
+        }
+
+        async function getLibrary() {
+            const token = localStorage.getItem('token');
+            if (!token) return [];
+
+            const response = await fetch('/library', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+            return data;
+        }
+
+        async function displayItems(containerId, items, isTVShow) {
+            const container = document.getElementById(containerId);
+            const library = await getLibrary();
+            container.innerHTML = '';
+            items.forEach(item => {
+                const isSaved = library.some(libItem => {
+                    const parsedItem = JSON.parse(libItem);
+                    return parsedItem.id === item.id && parsedItem.type === (isTVShow ? 'tv' : 'movie');
+                });
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
+                itemDiv.innerHTML = `
+                    <div class="card">
+                        <a href="stream.html?id=${item.id}&type=${isTVShow ? 'tv' : 'movie'}">
+                            <img src="https://image.tmdb.org/t/p/w200${item.poster_path}" class="card-img-top" alt="${item.title || item.name}">
+                        </a>
+                        <div class="card-body text-center">
+                            <h5 class="card-title">${item.title || item.name}</h5>
+                            <p class="card-text">${item.release_date || item.first_air_date}</p>
+                            <button class="btn ${isSaved ? 'saved-btn' : 'save-btn'}" 
+                                    onclick="${isSaved ? '' : `saveShow(${item.id}, '${isTVShow ? 'tv' : 'movie'}', '${item.title || item.name}', '${item.poster_path}')`}">
+                                ${isSaved ? 'Saved' : 'Save to Library'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        async function saveShow(id, type, title, posterPath) {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please log in to save shows.');
+                return window.location.href = 'login.html';
+            }
+
+            const response = await fetch('/library/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({ id, type, title, posterPath }),
+            });
+
+            if (response.ok) {
+                alert('Show saved to your library!');
+                fetchData('/movie/top_rated', 'movie-list');
+                fetchData('/tv/top_rated', 'tv-show-list', true);
+            } else {
+                alert('Failed to save show.');
+            }
+        }
+
+        async function searchTVShows() {
+            const query = document.getElementById('search-input').value;
+            if (query) {
+                window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+            } else {
+                alert('Please enter a search term.');
+            }
+        }
+
+        // Call on page load
+        checkLoginStatus();
+        fetchData('/movie/top_rated', 'movie-list');
+        fetchData('/tv/top_rated', 'tv-show-list', true);
+    </script>
+</body>
+</html>
