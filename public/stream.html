@@ -6,6 +6,8 @@
     <title>Stream</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #000;
@@ -82,16 +84,16 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">NetMovies</a>
+            <a class="navbar-brand" href="#"><i class="fas fa-film"></i> NetMovies</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="library.html">My Library</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="library.html"><i class="fas fa-bookmark"></i> My Library</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
                 </ul>
             </div>
         </div>
@@ -102,15 +104,15 @@
         <iframe id="player" src="" allowfullscreen></iframe>
 
         <!-- Save to Library Section -->
-        <button id="save-library-btn" class="btn save-btn mt-4" onclick="saveToLibrary()">Save to Library</button>
+        <button id="save-library-btn" class="btn save-btn mt-4" onclick="saveToLibrary()"><i class="fas fa-save"></i> Save to Library</button>
     </div>
 
     <div class="comments-section container">
-        <h3>Comments</h3>
+        <h3><i class="fas fa-comments"></i> Comments</h3>
         <div id="comments-list"></div>
         <div class="comment-form mt-3">
             <textarea id="comment-text" placeholder="Write a comment..."></textarea>
-            <button class="btn btn-custom" onclick="postComment()">Post Comment</button>
+            <button class="btn btn-custom" onclick="postComment()"><i class="fas fa-paper-plane"></i> Post Comment</button>
         </div>
     </div>
 
@@ -135,50 +137,49 @@
         }
 
         async function loadTVShow() {
-    const response = await fetch(`${apiUrl}/tv/${id}?api_key=${apiKey}&language=en-US`);
-    const data = await response.json();
-    document.getElementById('title').textContent = data.name;
-    currentItem = { id, type: 'tv', title: data.name, posterPath: data.poster_path };
-    checkIfSaved();
+            const response = await fetch(`${apiUrl}/tv/${id}?api_key=${apiKey}&language=en-US`);
+            const data = await response.json();
+            document.getElementById('title').textContent = data.name;
+            currentItem = { id, type: 'tv', title: data.name, posterPath: data.poster_path };
+            checkIfSaved();
 
-    const container = document.createElement('div');
-    container.id = 'season-container';
-    container.className = 'text-center';
-    document.querySelector('.container').appendChild(container);
+            const container = document.createElement('div');
+            container.id = 'season-container';
+            container.className = 'text-center';
+            document.querySelector('.container').appendChild(container);
 
-    data.seasons.forEach(season => {
-        const button = document.createElement('button');
-        button.className = 'btn btn-custom';
-        button.textContent = season.name;
-        button.onclick = () => loadEpisodes(season.season_number);
-        container.appendChild(button);
-    });
-}
+            data.seasons.forEach(season => {
+                const button = document.createElement('button');
+                button.className = 'btn btn-custom';
+                button.textContent = season.name;
+                button.onclick = () => loadEpisodes(season.season_number);
+                container.appendChild(button);
+            });
+        }
 
-async function loadEpisodes(seasonNumber) {
-    const response = await fetch(`${apiUrl}/tv/${id}/season/${seasonNumber}?api_key=${apiKey}&language=en-US`);
-    const data = await response.json();
+        async function loadEpisodes(seasonNumber) {
+            const response = await fetch(`${apiUrl}/tv/${id}/season/${seasonNumber}?api_key=${apiKey}&language=en-US`);
+            const data = await response.json();
 
-    const container = document.getElementById('season-container');
-    container.innerHTML = ''; // Clear existing content
+            const container = document.getElementById('season-container');
+            container.innerHTML = ''; // Clear existing content
 
-    data.episodes.forEach(episode => {
-        const button = document.createElement('button');
-        button.className = 'btn btn-custom';
-        button.textContent = `Episode ${episode.episode_number}: ${episode.name}`;
-        button.onclick = () => {
-            document.getElementById('player').src = `https://www.2embed.cc/embedtv/${id}&s=${seasonNumber}&e=${episode.episode_number}`;
-        };
-        container.appendChild(button);
-    });
+            data.episodes.forEach(episode => {
+                const button = document.createElement('button');
+                button.className = 'btn btn-custom';
+                button.textContent = `Episode ${episode.episode_number}: ${episode.name}`;
+                button.onclick = () => {
+                    document.getElementById('player').src = `https://www.2embed.cc/embedtv/${id}&s=${seasonNumber}&e=${episode.episode_number}`;
+                };
+                container.appendChild(button);
+            });
 
-    const backButton = document.createElement('button');
-    backButton.className = 'btn btn-custom';
-    backButton.textContent = 'Back to Seasons';
-    backButton.onclick = () => loadTVShow();
-    container.appendChild(backButton);
-}
-
+            const backButton = document.createElement('button');
+            backButton.className = 'btn btn-custom';
+            backButton.textContent = 'Back to Seasons';
+            backButton.onclick = () => loadTVShow();
+            container.appendChild(backButton);
+        }
 
         async function checkIfSaved() {
             const token = localStorage.getItem('token');
@@ -244,7 +245,7 @@ async function loadEpisodes(seasonNumber) {
                     <div class="comment-header">
                         ${comment.username} • ${new Date(comment.timestamp).toLocaleDateString()}
                         ${comment.userId === getLoggedInUserId() ? `
-                            <button class="btn btn-sm btn-danger float-end" onclick="deleteComment('${comment._id}')">Delete</button>
+                            <button class="btn btn-sm btn-danger float-end" onclick="deleteComment('${comment._id}')"><i class="fas fa-trash"></i></button>
                         ` : ''}
                     </div>
                     <div class="comment-content">

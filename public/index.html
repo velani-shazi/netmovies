@@ -6,6 +6,8 @@
     <title>NetMovies</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #141414;
@@ -50,16 +52,16 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">NetMovies</a>
+            <a class="navbar-brand" href="#"><i class="fas fa-film"></i> NetMovies</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="library.html">My Library</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="library.html"><i class="fas fa-bookmark"></i> My Library</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
                 </ul>
             </div>
         </div>
@@ -69,14 +71,14 @@
         <!-- User Info -->
         <div id="user-info" class="d-flex justify-content-end">
             <span id="username" class="me-3"></span>
-            <button id="logout-btn" class="btn btn-danger btn-sm" style="display: none;" onclick="logout()">Logout</button>
+            <button id="logout-btn" class="btn btn-danger btn-sm" style="display: none;" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
 
         <!-- Search Bar -->
         <div class="search-container">
             <div class="input-group">
                 <input type="text" id="search-input" class="form-control" placeholder="Search TV Shows">
-                <button class="btn btn-primary" onclick="searchTVShows()">Search</button>
+                <button class="btn btn-primary" onclick="searchTVShows()"><i class="fas fa-search"></i> Search</button>
             </div>
         </div>
 
@@ -158,7 +160,7 @@
                             <p class="card-text">${item.release_date || item.first_air_date}</p>
                             <button class="btn ${isSaved ? 'saved-btn' : 'save-btn'}" 
                                     onclick="${isSaved ? '' : `saveShow(${item.id}, '${isTVShow ? 'tv' : 'movie'}', '${item.title || item.name}', '${item.poster_path}')`}">
-                                ${isSaved ? 'Saved' : 'Save to Library'}
+                                ${isSaved ? '<i class="fas fa-check"></i> Saved' : '<i class="fas fa-save"></i> Save to Library'}
                             </button>
                         </div>
                     </div>
