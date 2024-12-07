@@ -1,346 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stream</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Font Awesome CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background-color: #000;
-            color: white;
-        }
-        nav.navbar {
-            background-color: #000000;
-        }
-        .navbar-brand {
-            color: #e50914 !important;
-            font-weight: bold;
-        }
-        .navbar-nav .nav-link {
-            color: #ffffff !important;
-            margin-right: 15px;
-        }
-        .navbar-nav .nav-link:hover {
-            color: #e50914 !important;
-        }
-        .container {
-            margin-top: 20px;
-        }
-        iframe {
-            width: 100%;
-            height: 500px;
-            border: none;
-            margin-top: 20px;
-        }
-        .btn-custom {
-            background-color: #333;
-            color: white;
-            border: none;
-            margin: 5px;
-        }
-        .btn-custom:hover {
-            background-color: #555;
-        }
-        .save-btn {
-            background-color: #e50914;
-            border: none;
-        }
-        .save-btn:hover {
-            background-color: #f40612;
-        }
-        .saved-btn {
-            background-color: #555;
-            border: none;
-            cursor: not-allowed;
-        }
-        .comments-section {
-            margin-top: 40px;
-        }
-        .comment-form textarea {
-            width: 100%;
-            height: 80px;
-            background: #333;
-            color: white;
-            border: 1px solid #555;
-            padding: 10px;
-        }
-        .comment {
-            background: #222;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-        }
-        .comment-header {
-            font-size: 0.9em;
-            color: #888;
-            margin-bottom: 5px;
-        }
+      body {
+        background-color: #000;
+        color: white;
+      }
+      nav.navbar {
+        background-color: #000000;
+      }
+      .navbar-brand {
+        color: #e50914 !important;
+        font-weight: bold;
+      }
+      .navbar-nav .nav-link {
+        color: #ffffff !important;
+        margin-right: 15px;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #e50914 !important;
+      }
+      .container {
+        margin-top: 20px;
+      }
+      iframe {
+        width: 100%;
+        height: 500px;
+        border: none;
+        margin-top: 20px;
+      }
+      .btn-custom {
+        background-color: #333;
+        color: white;
+        border: none;
+        margin: 5px;
+      }
+      .btn-custom:hover {
+        background-color: #555;
+      }
+      .save-btn {
+        background-color: #e50914;
+        border: none;
+      }
+      .save-btn:hover {
+        background-color: #f40612;
+      }
+      .saved-btn {
+        background-color: #555;
+        border: none;
+        cursor: not-allowed;
+      }
+      .comments-section {
+        margin-top: 40px;
+      }
+      .comment-form textarea {
+        width: 100%;
+        height: 80px;
+        background: #333;
+        color: white;
+        border: 1px solid #555;
+        padding: 10px;
+      }
+      .comment {
+        background: #222;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+      .comment-header {
+        font-size: 0.9em;
+        color: #888;
+        margin-bottom: 5px;
+      }
 
-        iframe {
-            width: 100%;
-            height: 300px;
-            border: none;
-            margin-top: 20px;
-        }
+      iframe {
+        width: 100%;
+        height: 300px;
+        border: none;
+        margin-top: 20px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><i class="fas fa-film"></i> NetMovies</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="library.html"><i class="fas fa-bookmark"></i> My Library</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html"><i class="fas fa-user-plus"></i> Sign Up</a></li>
-                </ul>
-            </div>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"
+          ><i class="fas fa-film"></i> NetMovies</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html"
+                ><i class="fas fa-home"></i> Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="library.html"
+                ><i class="fas fa-bookmark"></i> My Library</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="login.html"
+                ><i class="fas fa-sign-in-alt"></i> Login</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="signup.html"
+                ><i class="fas fa-user-plus"></i> Sign Up</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <div class="container text-center">
-        <h1 id="title">Loading...</h1>
-        <iframe id="player" src="" allowfullscreen></iframe>
+      <h1 id="title">Loading...</h1>
+      <iframe id="player" src="" allowfullscreen></iframe>
 
-        <!-- Save to Library Section -->
-        <button id="save-library-btn" class="btn save-btn mt-4" onclick="saveToLibrary()"><i class="fas fa-save"></i> Save to Library</button>
+      <!-- Save to Library Section -->
+      <button
+        id="save-library-btn"
+        class="btn save-btn mt-4"
+        onclick="saveToLibrary()"
+      >
+        <i class="fas fa-save"></i> Save to Library
+      </button>
     </div>
 
     <div class="comments-section container">
-        <h3><i class="fas fa-comments"></i> Comments</h3>
-        <div id="comments-list"></div>
-        <div class="comment-form mt-3">
-            <textarea id="comment-text" placeholder="Write a comment..."></textarea>
-            <button class="btn btn-custom" onclick="postComment()"><i class="fas fa-paper-plane"></i> Post Comment</button>
-        </div>
+      <h3><i class="fas fa-comments"></i> Comments</h3>
+      <div id="comments-list"></div>
+      <div class="comment-form mt-3">
+        <textarea id="comment-text" placeholder="Write a comment..."></textarea>
+        <button class="btn btn-custom" onclick="postComment()">
+          <i class="fas fa-paper-plane"></i> Post Comment
+        </button>
+      </div>
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const id = urlParams.get('id').toString();
-        const type = urlParams.get('type');
-        const apiKey = '3eb8ed61d723170933f1008a4e401d0c';
-        const apiUrl = 'https://api.themoviedb.org/3';
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id").toString();
+      const type = urlParams.get("type");
+      const apiKey = "3eb8ed61d723170933f1008a4e401d0c";
+      const apiUrl = "https://api.themoviedb.org/3";
 
-        let currentItem = null;
+      let currentItem = null;
 
-        async function loadMovie() {
-            const response = await fetch(`${apiUrl}/movie/${id}?api_key=${apiKey}&language=en-US`);
-            const data = await response.json();
-            document.getElementById('title').textContent = data.title;
-            document.getElementById('player').src = `https://www.2embed.cc/embed/${id}`;
-            currentItem = { id, type: 'movie', title: data.title, posterPath: data.poster_path };
-            checkIfSaved();
+      async function loadMovie() {
+        const response = await fetch(
+          `${apiUrl}/movie/${id}?api_key=${apiKey}&language=en-US`
+        );
+        const data = await response.json();
+        document.getElementById("title").textContent = data.title;
+        document.getElementById(
+          "player"
+        ).src = `https://www.2embed.cc/embed/${id}`;
+        currentItem = {
+          id,
+          type: "movie",
+          title: data.title,
+          posterPath: data.poster_path,
+        };
+        checkIfSaved();
+      }
+
+      async function loadTVShow() {
+        const response = await fetch(
+          `${apiUrl}/tv/${id}?api_key=${apiKey}&language=en-US`
+        );
+        const data = await response.json();
+        document.getElementById("title").textContent = data.name;
+        currentItem = {
+          id,
+          type: "tv",
+          title: data.name,
+          posterPath: data.poster_path,
+        };
+        checkIfSaved();
+
+        const container = document.createElement("div");
+        container.id = "season-container";
+        container.className = "text-center";
+        document.querySelector(".container").appendChild(container);
+
+        data.seasons.forEach((season) => {
+          const button = document.createElement("button");
+          button.className = "btn btn-custom";
+          button.textContent = season.name;
+          button.onclick = () => loadEpisodes(season.season_number);
+          container.appendChild(button);
+        });
+      }
+
+      async function loadEpisodes(seasonNumber) {
+        const response = await fetch(
+          `${apiUrl}/tv/${id}/season/${seasonNumber}?api_key=${apiKey}&language=en-US`
+        );
+        const data = await response.json();
+
+        const container = document.getElementById("season-container");
+        container.innerHTML = ""; // Clear existing content
+
+        data.episodes.forEach((episode) => {
+          const button = document.createElement("button");
+          button.className = "btn btn-custom";
+          button.textContent = `Episode ${episode.episode_number}: ${episode.name}`;
+          button.onclick = () => {
+            document.getElementById(
+              "player"
+            ).src = `https://www.2embed.cc/embedtv/${id}&s=${seasonNumber}&e=${episode.episode_number}`;
+          };
+          container.appendChild(button);
+        });
+
+        const backButton = document.createElement("button");
+        backButton.className = "btn btn-custom";
+        backButton.textContent = "Back to Seasons";
+        backButton.onclick = () => loadTVShow();
+        container.appendChild(backButton);
+      }
+
+      async function checkIfSaved() {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await fetch("/library", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const library = await response.json();
+        const isSaved = library.some((libItem) => {
+          const parsedItem = JSON.parse(libItem);
+          return (
+            parsedItem.id == currentItem.id &&
+            parsedItem.type == currentItem.type
+          );
+        });
+
+        const saveBtn = document.getElementById("save-library-btn");
+        if (isSaved) {
+          saveBtn.textContent = "Saved";
+          saveBtn.className = "btn saved-btn mt-4";
+          saveBtn.disabled = true;
+        }
+      }
+
+      async function saveToLibrary() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("Please log in to save shows.");
+          return (window.location.href = "login.html");
         }
 
-        async function loadTVShow() {
-            const response = await fetch(`${apiUrl}/tv/${id}?api_key=${apiKey}&language=en-US`);
-            const data = await response.json();
-            document.getElementById('title').textContent = data.name;
-            currentItem = { id, type: 'tv', title: data.name, posterPath: data.poster_path };
-            checkIfSaved();
+        const response = await fetch("/library/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(currentItem),
+        });
 
-            const container = document.createElement('div');
-            container.id = 'season-container';
-            container.className = 'text-center';
-            document.querySelector('.container').appendChild(container);
-
-            data.seasons.forEach(season => {
-                const button = document.createElement('button');
-                button.className = 'btn btn-custom';
-                button.textContent = season.name;
-                button.onclick = () => loadEpisodes(season.season_number);
-                container.appendChild(button);
-            });
+        if (response.ok) {
+          alert("Show saved to your library!");
+          checkIfSaved();
+        } else {
+          alert("Failed to save show.");
         }
+      }
 
-        async function loadEpisodes(seasonNumber) {
-            const response = await fetch(`${apiUrl}/tv/${id}/season/${seasonNumber}?api_key=${apiKey}&language=en-US`);
-            const data = await response.json();
+      async function loadComments() {
+        const token = localStorage.getItem("token");
+        if (!token) return;
 
-            const container = document.getElementById('season-container');
-            container.innerHTML = ''; // Clear existing content
+        const response = await fetch(
+          `/comment/comments?mediaId=${id}&type=${type}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const comments = await response.json();
 
-            data.episodes.forEach(episode => {
-                const button = document.createElement('button');
-                button.className = 'btn btn-custom';
-                button.textContent = `Episode ${episode.episode_number}: ${episode.name}`;
-                button.onclick = () => {
-                    document.getElementById('player').src = `https://www.2embed.cc/embedtv/${id}&s=${seasonNumber}&e=${episode.episode_number}`;
-                };
-                container.appendChild(button);
-            });
-
-            const backButton = document.createElement('button');
-            backButton.className = 'btn btn-custom';
-            backButton.textContent = 'Back to Seasons';
-            backButton.onclick = () => loadTVShow();
-            container.appendChild(backButton);
-        }
-
-        async function checkIfSaved() {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
-            const response = await fetch('/library', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const library = await response.json();
-            const isSaved = library.some(libItem => {
-                const parsedItem = JSON.parse(libItem);
-                return parsedItem.id == currentItem.id && parsedItem.type == currentItem.type;
-            });
-
-            const saveBtn = document.getElementById('save-library-btn');
-            if (isSaved) {
-                saveBtn.textContent = 'Saved';
-                saveBtn.className = 'btn saved-btn mt-4';
-                saveBtn.disabled = true;
-            }
-        }
-
-        async function saveToLibrary() {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please log in to save shows.');
-                return window.location.href = 'login.html';
-            }
-
-            const response = await fetch('/library/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify(currentItem),
-            });
-
-            if (response.ok) {
-                alert('Show saved to your library!');
-                checkIfSaved();
-            } else {
-                alert('Failed to save show.');
-            }
-        }
-
-        async function loadComments() {
-            const token = localStorage.getItem('token');
-            if (!token) return;
-
-            const response = await fetch(`/comment/comments?mediaId=${id}&type=${type}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            const comments = await response.json();
-
-            const commentsList = document.getElementById('comments-list');
-            commentsList.innerHTML = comments.map(comment => `
+        const commentsList = document.getElementById("comments-list");
+        commentsList.innerHTML = comments
+          .map(
+            (comment) => `
                 <div class="comment">
                     <div class="comment-header">
-                        ${comment.username} • ${new Date(comment.timestamp).toLocaleDateString()}
-                        ${comment.userId === getLoggedInUserId() ? `
+                        ${comment.username} • ${new Date(
+              comment.timestamp
+            ).toLocaleDateString()}
+                        ${
+                          comment.userId === getLoggedInUserId()
+                            ? `
                             <button class="btn btn-sm btn-danger float-end" onclick="deleteComment('${comment._id}')"><i class="fas fa-trash"></i></button>
-                        ` : ''}
+                        `
+                            : ""
+                        }
                     </div>
                     <div class="comment-content">
                         ${comment.text}
                     </div>
                 </div>
-            `).join('');
+            `
+          )
+          .join("");
+      }
+
+      async function postComment() {
+        const token = localStorage.getItem("token");
+        const username = localStorage.getItem("username");
+        if (!token) {
+          alert("Please log in to comment.");
+          return;
         }
 
-        async function postComment() {
-            const token = localStorage.getItem('token');
-            const username = localStorage.getItem('username');
-            if (!token) {
-                alert('Please log in to comment.');
-                return;
-            }
+        const text = document.getElementById("comment-text").value;
+        if (!text.trim()) return;
 
-            const text = document.getElementById('comment-text').value;
-            if (!text.trim()) return;
+        const response = await fetch("/comment/comments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            mediaId: id,
+            type: type,
+            text: text,
+            username: username,
+          }),
+        });
 
-            const response = await fetch('/comment/comments', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    mediaId: id,
-                    type: type,
-                    text: text,
-                    username: username
-                })
-            });
+        if (response.ok) {
+          document.getElementById("comment-text").value = "";
+          loadComments();
+        }
+      }
 
-            if (response.ok) {
-                document.getElementById('comment-text').value = '';
-                loadComments();
-            }
+      async function deleteComment(commentId) {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          alert("Please log in to delete comments.");
+          return;
         }
 
-        async function deleteComment(commentId) {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                alert('Please log in to delete comments.');
-                return;
-            }
+        const confirmDelete = confirm(
+          "Are you sure you want to delete this comment?"
+        );
+        if (!confirmDelete) return;
 
-            const confirmDelete = confirm('Are you sure you want to delete this comment?');
-            if (!confirmDelete) return;
+        try {
+          const response = await fetch(`/comment/comments/${commentId}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-            try {
-                const response = await fetch(`/comment/comments/${commentId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                });
-
-                if (response.ok) {
-                    alert('Comment deleted successfully');
-                    loadComments();
-                } else {
-                    const error = await response.json();
-                    alert(`Failed to delete comment: ${error.error}`);
-                }
-            } catch (err) {
-                console.error('Error deleting comment:', err);
-                alert('An error occurred while deleting the comment.');
-            }
+          if (response.ok) {
+            alert("Comment deleted successfully");
+            loadComments();
+          } else {
+            const error = await response.json();
+            alert(`Failed to delete comment: ${error.error}`);
+          }
+        } catch (err) {
+          console.error("Error deleting comment:", err);
+          alert("An error occurred while deleting the comment.");
         }
+      }
 
-        function getLoggedInUserId() {
-            const token = localStorage.getItem('token');
-            if (!token) return null;
+      function getLoggedInUserId() {
+        const token = localStorage.getItem("token");
+        if (!token) return null;
 
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            return payload.id; // Assumes the JWT contains a user ID in the `id` field
-        }
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.id; // Assumes the JWT contains a user ID in the `id` field
+      }
 
-        if (type === 'movie') {
-            loadMovie();
-        } else if (type === 'tv') {
-            loadTVShow();
-        } else {
-            document.body.innerHTML = '<h1>No valid ID provided</h1>';
-        }
+      if (type === "movie") {
+        loadMovie();
+      } else if (type === "tv") {
+        loadTVShow();
+      } else {
+        document.body.innerHTML = "<h1>No valid ID provided</h1>";
+      }
 
-        loadComments();
+      loadComments();
     </script>
-</body>
+  </body>
 </html>
